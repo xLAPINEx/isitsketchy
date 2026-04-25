@@ -6,7 +6,7 @@ metadata:
   github-path: skills/isitsketchy
   github-ref: refs/heads/main
   github-repo: https://github.com/sketchmasta/isitsketchy
-  github-tree-sha: b696737b802b17ecf9f2aac4d6e6743e05dfdf24
+  github-tree-sha: e1506d9f9e4a4bdaa3e607f57c2868321cb9e9ab
 name: isitsketchy
 when_to_use: Use when asked "is [artist] sketch?", "is [artist] nazi?", "is [artist] NSBM?", "should I support [band]?", or any question about whether a metal artist or band has white supremacist, fascist, or National Socialist ties.
 ---
