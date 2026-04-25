@@ -3,10 +3,10 @@ allowed-tools: WebSearch WebFetch
 argument-hint: <artist or band name>
 description: Researches whether a metal or black metal artist/band has Nazi ties or engages in NSBM (National Socialist Black Metal). Searches Metal Archives, community spreadsheets, Reddit r/isitsketch and r/rabm, band interviews, and the web for evidence, then delivers a structured verdict.
 metadata:
-    github-path: skills/isitsketchy
-    github-ref: refs/heads/main
-    github-repo: https://github.com/sketchmasta/isitsketchy
-    github-tree-sha: b696737b802b17ecf9f2aac4d6e6743e05dfdf24
+  github-path: skills/isitsketchy
+  github-ref: refs/heads/main
+  github-repo: https://github.com/sketchmasta/isitsketchy
+  github-tree-sha: b696737b802b17ecf9f2aac4d6e6743e05dfdf24
 name: isitsketchy
 when_to_use: Use when asked "is [artist] sketch?", "is [artist] nazi?", "is [artist] NSBM?", "should I support [band]?", or any question about whether a metal artist or band has white supremacist, fascist, or National Socialist ties.
 ---
@@ -24,9 +24,30 @@ Work through all sources below. Use `WebSearch` for queries and `WebFetch` for d
 
 ### 1. Metal Archives (Encyclopaedia Metallum)
 
-Search URL: `https://www.metal-archives.com/search?searchString=<ARTIST>&type=band`
+Metal Archives blocks direct HTML fetches intermittently (403). Use this two-step approach:
 
-Fetch the band's page and look for:
+**Step 1 — AJAX search (returns JSON, more reliable):**
+
+```
+https://www.metal-archives.com/search/ajax-band-search/?field=name&query=<ARTIST>
+```
+
+This is the endpoint Metal Archives' own frontend uses. It returns a JSON object with band name, country, genre, and band ID. Use `WebFetch` on this URL.
+
+**Step 2 — Band page (use the ID from step 1):**
+
+Construct the band page URL as:
+```
+https://www.metal-archives.com/bands/<band-name>/<band-id>
+```
+
+Fetch it with `WebFetch`. If it returns 403, **fall back immediately** to a web search:
+```
+site:metal-archives.com "<ARTIST>"
+```
+Search snippets typically surface genre, country, label, and member info without needing the page directly.
+
+Look for:
 - Genre tags containing "NSBM" or "National Socialist Black Metal"
 - Band description or notes mentioning ideology
 - Member profiles — check if any members have bands tagged as NSBM
@@ -94,7 +115,7 @@ Search queries:
 - `"<ARTIST>" interview politics ideology`
 - `"<ARTIST>" interview "national socialist" OR "white power" OR "fascist"`
 - `"<ARTIST>" interview OR statement race nazi`
-- `"<ARTIST>" interview site:metalwani.com OR site:ncs.fm OR site:blabbermouth.net OR site:metalsucks.net OR site:revolvermag.com OR site:kerrang.com`
+- `"<ARTIST>" interview site: bardomethodology.com OR site:heavymetalcitadel.com OR site:blackmetalzine.com OR site:blacforjemagazine.com OR site:nocleansinging.com OR site:metalwani.com OR site:ncs.fm OR site:blabbermouth.net OR site:metalsucks.net OR site:revolvermag.com OR site:kerrang.com`
 
 For each promising result:
 1. Use `WebFetch` on the interview URL to read the full text
