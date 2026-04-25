@@ -1,24 +1,12 @@
----
-allowed-tools: WebSearch WebFetch
-argument-hint: <artist or band name>
-description: Researches whether a metal or black metal artist/band has Nazi ties or engages in NSBM (National Socialist Black Metal). Searches Metal Archives, community spreadsheets, Reddit r/isitsketch and r/rabm, band interviews, and the web for evidence, then delivers a structured verdict.
-metadata:
-  github-path: skills/isitsketchy
-  github-ref: refs/heads/main
-  github-repo: https://github.com/sketchmasta/isitsketchy
-  github-tree-sha: e1506d9f9e4a4bdaa3e607f57c2868321cb9e9ab
-name: isitsketchy
-when_to_use: Use when asked "is [artist] sketch?", "is [artist] nazi?", "is [artist] NSBM?", "should I support [band]?", or any question about whether a metal artist or band has white supremacist, fascist, or National Socialist ties.
----
 # IsItSketchy — Nazi/NSBM Research Skill
 
-You are researching whether **$ARGUMENTS** has Nazi ties, promotes National Socialist ideology, or is considered "sketch" (unsafe to support) in the metal community.
+You are researching whether **{{ARTIST}}** has Nazi ties, promotes National Socialist ideology, or is considered "sketch" (unsafe to support) in the metal community.
 
-If `$ARGUMENTS` is empty, ask the user which artist or band they want to research before proceeding.
+If no artist or band name was provided, ask the user before proceeding.
 
 ## Sources to Search
 
-Work through all sources below. Use `WebSearch` for queries and `WebFetch` for direct URL access.
+Work through all sources below. Use web search for queries and fetch URLs directly where needed.
 
 ---
 
@@ -32,7 +20,7 @@ Metal Archives blocks direct HTML fetches intermittently (403). Use this two-ste
 https://www.metal-archives.com/search/ajax-band-search/?field=name&query=<ARTIST>
 ```
 
-This is the endpoint Metal Archives' own frontend uses. It returns a JSON object with band name, country, genre, and band ID. Use `WebFetch` on this URL.
+This is the endpoint Metal Archives' own frontend uses. It returns a JSON object with band name, country, genre, and band ID. Fetch this URL directly.
 
 **Step 2 — Band page (use the ID from step 1):**
 
@@ -41,7 +29,7 @@ Construct the band page URL as:
 https://www.metal-archives.com/bands/<band-name>/<band-id>
 ```
 
-Fetch it with `WebFetch`. If it returns 403, **fall back immediately** to a web search:
+Fetch the page directly. If it returns 403, **fall back immediately** to a web search:
 ```
 site:metal-archives.com "<ARTIST>"
 ```
@@ -76,7 +64,7 @@ Look for: callout posts, pinned warnings, discussions.
 
 ### 4. Black Metal Sketch List — Google Sheets (community spreadsheet)
 
-A comprehensive community-curated spreadsheet with three tabs. **Each tab is a CSV export — fetch the URL, and if it redirects to a different host, follow that redirect URL with a second `WebFetch` call.**
+A comprehensive community-curated spreadsheet with three tabs. **Each tab is a CSV export — fetch the URL, and if it redirects to a different host, follow and fetch the redirect URL.**
 
 #### Tab 1 — Black Metal bands
 
@@ -109,7 +97,7 @@ Cross-reference the band's label against this list. A label appearing here is a 
 
 ### 5. Band interviews (fact-checking)
 
-Use `WebSearch` to locate interviews, then `WebFetch` to read the actual interview page. **Always cite the primary source — the interview itself — not a Reddit post or community list that references it.**
+Search for interviews, then fetch and read the actual interview page. **Always cite the primary source — the interview itself — not a Reddit post or community list that references it.**
 
 Search queries:
 - `"<ARTIST>" interview politics ideology`
@@ -118,7 +106,7 @@ Search queries:
 - `"<ARTIST>" interview site: bardomethodology.com OR site:heavymetalcitadel.com OR site:blackmetalzine.com OR site:blacforjemagazine.com OR site:nocleansinging.com OR site:metalwani.com OR site:ncs.fm OR site:blabbermouth.net OR site:metalsucks.net OR site:revolvermag.com OR site:kerrang.com`
 
 For each promising result:
-1. Use `WebFetch` on the interview URL to read the full text
+1. Fetch the interview URL and read the full text
 2. Find the relevant quote directly in the article
 3. Cite it as: `[Publication, Year] "[direct quote]" — [URL]`
 
