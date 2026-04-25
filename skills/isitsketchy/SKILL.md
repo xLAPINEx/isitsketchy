@@ -1,11 +1,15 @@
 ---
-name: isitsketchy
-description: Researches whether a metal or black metal artist/band has Nazi ties or engages in NSBM (National Socialist Black Metal). Searches Metal Archives, community spreadsheets, Reddit r/isitsketch and r/rabm, band interviews, and the web for evidence, then delivers a structured verdict.
-when_to_use: Use when asked "is [artist] sketch?", "is [artist] nazi?", "is [artist] NSBM?", "should I support [band]?", or any question about whether a metal artist or band has white supremacist, fascist, or National Socialist ties.
-argument-hint: <artist or band name>
 allowed-tools: WebSearch WebFetch
+argument-hint: <artist or band name>
+description: Researches whether a metal or black metal artist/band has Nazi ties or engages in NSBM (National Socialist Black Metal). Searches Metal Archives, community spreadsheets, Reddit r/isitsketch and r/rabm, band interviews, and the web for evidence, then delivers a structured verdict.
+metadata:
+    github-path: skills/isitsketchy
+    github-ref: refs/heads/main
+    github-repo: https://github.com/sketchmasta/isitsketchy
+    github-tree-sha: b696737b802b17ecf9f2aac4d6e6743e05dfdf24
+name: isitsketchy
+when_to_use: Use when asked "is [artist] sketch?", "is [artist] nazi?", "is [artist] NSBM?", "should I support [band]?", or any question about whether a metal artist or band has white supremacist, fascist, or National Socialist ties.
 ---
-
 # IsItSketchy — Nazi/NSBM Research Skill
 
 You are researching whether **$ARGUMENTS** has Nazi ties, promotes National Socialist ideology, or is considered "sketch" (unsafe to support) in the metal community.
@@ -26,7 +30,7 @@ Fetch the band's page and look for:
 - Genre tags containing "NSBM" or "National Socialist Black Metal"
 - Band description or notes mentioning ideology
 - Member profiles — check if any members have bands tagged as NSBM
-- Label associations (see known NSBM labels below and the Labels sheet in source 5)
+- Label associations (see known NSBM labels below and the Labels sheet in source 4)
 - Comments section (often contains community warnings)
 
 ---
@@ -49,19 +53,7 @@ Look for: callout posts, pinned warnings, discussions.
 
 ---
 
-### 4. Hellseatic Sketchy Metal Bands PDF
-
-URL: `https://www.hellseatic.de/wp-content/uploads/Sketchy-Metal-Bands.pdf`
-
-A community-maintained PDF list of metal bands with political red flags. **Semi-reliable — requires fact-checking and cross-referencing with Metal Archives and interviews.**
-
-Fetch the URL with `WebFetch`. The PDF may not render as readable text — if it returns binary or garbled content, fall back to:
-- `WebSearch` query: `site:hellseatic.de "<ARTIST>"`
-- `WebSearch` query: `hellseatic "sketchy metal" "<ARTIST>"`
-
----
-
-### 5. Black Metal Sketch List — Google Sheets (community spreadsheet)
+### 4. Black Metal Sketch List — Google Sheets (community spreadsheet)
 
 A comprehensive community-curated spreadsheet with three tabs. **Each tab is a CSV export — fetch the URL, and if it redirects to a different host, follow that redirect URL with a second `WebFetch` call.**
 
@@ -94,7 +86,7 @@ Cross-reference the band's label against this list. A label appearing here is a 
 
 ---
 
-### 6. Band interviews (fact-checking)
+### 5. Band interviews (fact-checking)
 
 Use `WebSearch` to locate interviews, then `WebFetch` to read the actual interview page. **Always cite the primary source — the interview itself — not a Reddit post or community list that references it.**
 
@@ -119,7 +111,7 @@ If an interview is behind a paywall or unavailable, note that in the verdict and
 
 ---
 
-### 7. General web search
+### 6. General web search
 
 - Query: `"<ARTIST>" NSBM nazi "national socialist"`
 - Query: `"<ARTIST>" sketch racist white supremacist`
@@ -132,19 +124,17 @@ Look for: news coverage, scene commentary, label affiliations, lyrics analysis.
 
 1. **Identify the artist** — confirm spelling, country of origin, genre. If ambiguous, ask the user to clarify.
 
-2. **Check the community spreadsheets (source 5)** — fetch all three tabs and search for the artist and their label. Note classification and explanation.
+2. **Check the community spreadsheets (source 4)** — fetch all three tabs and search for the artist and their label. Note classification and explanation.
 
-3. **Check the Hellseatic PDF (source 4)** — fetch and search for the artist.
+3. **Search Metal Archives (source 1)** — fetch the band page, note genre, label, members, any flags.
 
-4. **Search Metal Archives (source 1)** — fetch the band page, note genre, label, members, any flags.
+4. **Search r/isitsketch (source 2)** — look for existing threads.
 
-5. **Search r/isitsketch (source 2)** — look for existing threads.
+5. **Search r/rabm (source 3)** — look for callout posts or discussions.
 
-6. **Search r/rabm (source 3)** — look for callout posts or discussions.
+6. **Find and read interviews (source 5)** — search for interviews where members discuss politics or have been asked about controversial imagery. Use these to fact-check or confirm claims from the lists above.
 
-7. **Find and read interviews (source 6)** — search for interviews where members discuss politics or have been asked about controversial imagery. Use these to fact-check or confirm claims from the lists above.
-
-8. **General web search (source 7)** — catch anything missed.
+7. **General web search (source 6)** — catch anything missed.
 
 9. **Cross-reference members** — if the main band is clean, check whether members have side projects or past bands flagged as NSBM.
 
@@ -189,7 +179,7 @@ After completing research, deliver a structured verdict:
 
 ## Known NSBM-Associated Labels (quick reference)
 
-The Labels tab of the community spreadsheet (source 5, Tab 3) is the authoritative list. Quick reference for common cases:
+The Labels tab of the community spreadsheet (source 4, Tab 3) is the authoritative list. Quick reference for common cases:
 
 - Darker Than Black Records
 - Nebelfee Klangwerge
@@ -220,7 +210,7 @@ If a band member has past or present involvement with these, flag it:
 
 - **Lyrics alone are not proof** — black metal uses dark imagery. Look for explicit NS ideology, not just darkness or paganism.
 - **Paganism ≠ Nazism** — heathenry and folk themes alone are not a red flag.
-- **Community lists are semi-reliable** — the spreadsheets and PDF are community-maintained and may contain errors. Always cross-reference with Metal Archives and interviews before treating a listing as definitive.
+- **Community lists are semi-reliable** — the spreadsheets are community-maintained and may contain errors. Always cross-reference with Metal Archives and interviews before treating a listing as definitive.
 - **Be specific with evidence** — quote sources, link threads, cite interviews with year and publication. Do not make unsupported claims.
 - **When uncertain, say so** — an inconclusive verdict with clear reasoning is better than a false one.
 - **The goal is informed decisions** — help people decide which artists to support financially.
