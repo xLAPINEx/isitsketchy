@@ -1,6 +1,6 @@
 # isitsketchy
 
-A [Claude Code skill](https://code.claude.com/docs/en/skills) that researches whether a metal or black metal artist has Nazi ties or engages in NSBM (National Socialist Black Metal).
+An [Agent Skill](https://agentskills.io) that researches whether a metal or black metal artist has Nazi ties or engages in NSBM (National Socialist Black Metal).
 
 ## What it does
 
@@ -22,18 +22,8 @@ When invoked with a band or artist name, the skill searches seven sources and de
 
 ## Install
 
-**Via GitHub CLI** (requires [gh](https://cli.github.com/) with the `skill` extension):
-
-```sh
-gh skill install sketchmasta/isitsketchy
 ```
-
-**Manually** — copy `SKILL.md` into your personal skills folder:
-
-```sh
-mkdir -p ~/.claude/skills/isitsketchy
-curl -o ~/.claude/skills/isitsketchy/SKILL.md \
-  https://raw.githubusercontent.com/sketchmasta/isitsketchy/main/SKILL.md
+npx skills add sketchmasta/isitsketchy --agent <your_agent_name>
 ```
 
 ## Usage
@@ -50,7 +40,7 @@ Examples:
 /isitsketchy Wolves in the Throne Room
 ```
 
-Claude will search the sources and return a verdict with evidence, confidence level, and a plain-language bottom line.
+Agent will search the sources and return a verdict with evidence, confidence level, and a plain-language bottom line.
 
 ## Example output
 
