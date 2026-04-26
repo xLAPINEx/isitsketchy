@@ -17,28 +17,23 @@ Work through all sources below. Use web search for queries and fetch URLs direct
 
 ### 1. Metal Archives (Encyclopaedia Metallum)
 
-Metal Archives blocks direct HTML fetches intermittently (403). Use this two-step approach:
+Metal Archives blocks direct fetches intermittently (403). Use this three-step approach:
 
-**Step 1 — AJAX search (returns JSON, more reliable):**
+**Step 1 — Find the band page URL:**
 
-```
-https://www.metal-archives.com/search/ajax-band-search/?field=name&query=<ARTIST>
-```
-
-This is the endpoint Metal Archives' own frontend uses. It returns a JSON object with band name, country, genre, and band ID. Fetch this URL directly.
-
-**Step 2 — Band page (use the ID from step 1):**
-
-Construct the band page URL as:
-```
-https://www.metal-archives.com/bands/<band-name>/<band-id>
-```
-
-Fetch the page directly. If it returns 403, **fall back immediately** to a web search:
 ```
 site:metal-archives.com "<ARTIST>"
 ```
-Search snippets typically surface genre, country, label, and member info without needing the page directly.
+
+This surfaces the band page URL (e.g. `https://www.metal-archives.com/bands/Artist_Name/12345`) along with genre, country, and label snippets from Google's index.
+
+**Step 2 — Fetch the band page directly (up to 3 retries):**
+
+Use the URL from step 1 and attempt to fetch it. If it returns 403, retry up to two more times before giving up. The block is intermittent and a retry often succeeds.
+
+**Step 3 — Fall back to search snippets:**
+
+If all three attempts return 403, rely on the search snippets from step 1. They typically surface genre, country, label, and member info without needing the live page.
 
 Look for:
 - Genre tags containing "NSBM" or "National Socialist Black Metal"
@@ -69,7 +64,14 @@ Look for: callout posts, pinned warnings, discussions.
 
 ### 4. Black Metal Sketch List — Google Sheets (community spreadsheet)
 
-A comprehensive community-curated spreadsheet with three tabs. **Each tab is a CSV export — fetch the URL, and if it redirects to a different host, follow and fetch the redirect URL.**
+A comprehensive community-curated spreadsheet with three tabs.
+
+**Do NOT use WebFetch for these URLs.** Google Sheets CSV exports issue a time-limited cross-domain redirect (`307 → googleusercontent.com`). WebFetch cannot follow cross-domain redirects inline, and the token in the redirect URL expires before a second request can be made (returns 400). Use **Bash with `curl -sL`** instead — it follows the entire redirect chain in a single HTTP session.
+
+To search a tab, run:
+```bash
+curl -sL "<CSV_URL>" | grep -i "<ARTIST>"
+```
 
 #### Tab 1 — Black Metal bands
 
