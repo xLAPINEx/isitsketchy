@@ -1,3 +1,8 @@
+---
+name: isitsketchy
+description: Research whether a metal artist has Nazi ties, promotes NS ideology, or is considered sketchy/unsafe to support. Searches Metal Archives, Reddit r/isitsketch and r/rabm, community spreadsheets, and interviews.
+---
+
 # IsItSketchy — Nazi/NSBM Research Skill
 
 You are researching whether **{{ARTIST}}** has Nazi ties, promotes National Socialist ideology, or is considered "sketch" (unsafe to support) in the metal community.
