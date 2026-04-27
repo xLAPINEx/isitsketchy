@@ -4,17 +4,21 @@ description: Research whether a metal artist has Nazi ties, promotes NS ideology
 ---
 
 ## ! Tool Dependencies !
-
 This skill uses these tools in order of preference:
-- `web_search` — for all search queries (preferred for general search, but often blocked by sites)
-- `browser_navigate` — for reliable web browsing when `web_search` is blocked or unavailable. ***Requires browser installation. Handle missing browser setup first if `browser_navigate` fails.***
-- `bash` with `curl -sL` — for fetching URLs directly (preferred over browser for structured data, but can be blocked)
 
-**Always try `curl -sL "<URL>"` before using any browser tool, and always navigate with `browser_navigate` if `curl` returns empty or blocked content or `web_search` is unavailable.** For pages like Reddit, `curl` is often blocked, so `browser_navigate` is the preferred fallback.
+1. firecrawl — PRIMARY TOOL for all web search, scraping, and crawling.
+   - Use this for structured data, blocked sites (Reddit, LinkedIn), and deep research.
+   - Firecrawl handles JavaScript rendering automatically; do NOT attempt to install a browser.
 
-Reddit pages: use `browser_navigate` after a general web search for the subreddit.
-Interview pages: use `browser_navigate` if `curl` fails. After navigating, use `browser_snapshot(full=true)` to retrieve page text, then `sed 's/<[^>]*>//g' | head -200` equivalent logic.
-Metal Archives: use `curl -sL "<URL>"` with up to 3 retries on 403. If curled is blocked after retries, use `browser_navigate`.
+2. bash with curl -sL — for quick, direct URL fetching.
+   - Use only for simple text sites or APIs where Firecrawl is overkill.
+
+---
+CRITICAL CONSTRAINTS:
+- BROWSERS: browser_navigate is DEPRECATED and UNAVAILABLE. 
+- INSTALLATION: Do not use npm, pip, or apt. You are in a restricted read-only environment.
+- REDDIT/METAL-ARCHIVES: Use firecrawl exclusively. Do not attempt curl retries if Firecrawl is available.
+- ERROR HANDLING: If a tool fails, do not troubleshoot the environment. State the limitation and provide the best possible answer with available data.
 
 # IsItSketchy — Nazi/NSBM Research Skill
 
